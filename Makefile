@@ -2,23 +2,27 @@ PRGRM = aubio_module
 TRGT =  aubio_module.o aubio_onset.o aubio_pitch.o hopbuffer.o aubio_through.o
 OBJ = main.o $(addprefix src/, $(TRGT))
 
-CXXFLAGS := -Wall -g -std=c++11
+BASE_FLAGS += -I./aubio/src
+CXXFLAGS := $(BASE_FLAGS) -Wall -g -std=c++11
 CXXFLAGS +=
 LDFLAGS =
-LDLIBS = -laubio
+LDLIBS = ./aubio/build/src/libaubio.a
 ifdef $(DEBUG_INFO)
 CXXFLAGS += -ggdb
 endif
 
 all: $(PRGRM)
 
+libs:
+	$(MAKE) -C aubio
+
 # link the program
 $(PRGRM): $(OBJ)
 	$(CXX) -o $@ $(CXXFLAGS) $^ $(LDFLAGS) $(LDLIBS)
 
 # builds given .o files dependend on their corresponding .cpp and .h files
-%.o: %.cpp
-	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
+%.o: %.cpp libs
+	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@ $(LDLIBS)
 
 
 # Compile tests of individual segments of the code.
@@ -42,6 +46,7 @@ fvec_test: src/fvec_test.o src/hopbuffer.o
 clean:
 	rm $(PRGRM)
 	rm $(OBJ)
+	$(MAKE) clean -C aubio
 
 cleandebug:
 	rm onset_test

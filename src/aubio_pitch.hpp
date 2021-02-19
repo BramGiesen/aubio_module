@@ -1,4 +1,4 @@
-#include <aubio/aubio.h>
+#include <aubio.h>
 #include <stdio.h>
 #include <string>
 

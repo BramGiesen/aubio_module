@@ -2,11 +2,13 @@ PRGRM = aubio_module
 TRGT =  aubio_module.o aubio_onset.o aubio_pitch.o hopbuffer.o aubio_through.o
 OBJ = main.o $(addprefix src/, $(TRGT))
 
-BASE_FLAGS += -I./aubio/src
+AUBIO_PATH = ../aubio
+
+BASE_FLAGS += -I$(AUBIO_PATH)/src
 CXXFLAGS := $(BASE_FLAGS) -Wall -g -std=c++11
 CXXFLAGS +=
 LDFLAGS =
-LDLIBS = ./aubio/build/src/libaubio.a
+LDLIBS = $(AUBIO_PATH)/libaubio.a
 ifdef $(DEBUG_INFO)
 CXXFLAGS += -ggdb
 endif
@@ -14,7 +16,7 @@ endif
 all: $(PRGRM)
 
 libs:
-	$(MAKE) -C aubio
+	$(MAKE) -C $(AUBIO_PATH)
 
 # link the program
 $(PRGRM): $(OBJ)
@@ -46,7 +48,7 @@ fvec_test: src/fvec_test.o src/hopbuffer.o
 clean:
 	rm $(PRGRM)
 	rm $(OBJ)
-	$(MAKE) clean -C aubio
+	$(MAKE) clean -C $(AUBIO_PATH)
 
 cleandebug:
 	rm onset_test

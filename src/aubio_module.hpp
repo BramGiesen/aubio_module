@@ -2,7 +2,7 @@
 #define AUBIOMODULE_H
 
 extern "C" {
-#include <aubio/aubio.h>
+#include <aubio.h>
 }
 #include <iostream>
 

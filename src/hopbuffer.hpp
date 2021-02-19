@@ -2,7 +2,7 @@
 #define HOPBUFFER_H
 
 extern "C" {
-#include <aubio/aubio.h>
+#include <aubio.h>
 }
 
 class HopBuffer{
